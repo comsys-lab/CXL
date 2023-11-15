@@ -1,6 +1,6 @@
 #################### Reference ####################
 # cloudsuite/data-caching:server @dockerhub
-# (URL) https://hub.docker.com/layers/cloudsuite/data-caching/server/images/sha256-84cb4ba1a28a7f16b118dbf09d0b5d0705fac0d9dc44bbb95719642ff4844ef1?context=explore)
+# (URL) https://hub.docker.com/layers/cloudsuite/data-caching/server/images/sha256-84cb4ba1a28a7f16b118dbf09d0b5d0705fac0d9dc44bbb95719642ff4844ef1?context=explore
 ###################################################
 
 FROM cloudsuite/base-os:ubuntu
