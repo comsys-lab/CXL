@@ -22,8 +22,7 @@ RUN set -x && apt-get update && apt-get install -y $buildDeps --no-install-recom
 # Prerequisite: kernel for HMSDK has been built.
 RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hmsdk.git \
 		# Option 1: Build cemalloc package
-		&& apt-get update && apt-get install -y cmake && apt-get install -y autoconf \
-  		&& apt-get update && apt-get install -y python3 \
+		&& apt-get update && apt-get install -y cmake && apt-get install -y autoconf && apt-get install -y python3 && apt-get install build-essential \
 		&& cd /usr/src/hmsdk/cemalloc/ && ./build.py \
 		# Option 2: Use pre-built cemalloc package
 		#&& cp -r /usr/src/CXL/cemalloc_package /usr/src/hmsdk/cemalloc/
