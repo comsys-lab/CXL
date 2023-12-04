@@ -16,7 +16,7 @@ RUN apt-get update && buildDeps='curl git gcc libc6-dev libevent-dev cmake make 
 
 # Install modified memcached
 RUN set -x && mkdir -p /usr/src/memcached && cd /usr/src \
-	&& git clone --recursive https://github.com/comsys-lab/CXL.git \
+	&& git clone --recursive --shallow-submodules https://github.com/comsys-lab/CXL.git \
 	&& cd /usr/src/CXL && tar -xzf memcached_hmsdk.tar.gz -C /usr/src/memcached --strip-components=1 && rm /usr/src/CXL/memcached_hmsdk.tar.gz
 
 # Install HMSDK
