@@ -33,7 +33,7 @@ RUN set -x && apt-get install -y libtool \
 
 # Build memcached with HMSDK implicitAPI
 RUN set -x && buildDeps='curl gcc libc6-dev libevent-dev make perl' \
-		&& apt-get update && apt-get install -y perl && apt-get install -y m4 && apt install curl \
+		&& apt-get update && apt-get install -y perl && apt-get install -y m4 && apt install curl && apt-get install -y libevent-dev \
 		&& apt remove -y automake && apt autoclean && apt -y autoremove \
 		&& cd /usr/src && curl -SL "http://ftp.gnu.org/gnu/automake/automake-1.16.4.tar.gz" -o automake.tar.gz && tar xvfz automake.tar.gz && rm automake.tar.gz \
 		&& cd automake-1.16.4 && ./configure --prefix=/usr && make && make install \
