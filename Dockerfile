@@ -29,7 +29,7 @@ RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hm
 
 # Build numactl
 RUN set -x && apt-get install -y libtool \
-		&& cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make && make install
+		&& cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make V=1 check && make install
 
 # HMSDK implicitAPI
 RUN set -x && export CE_MODE=CE_IMPLICIT && export CE_CXL_NODE=0 && export CE_ALLOC=CE_ALLOC_CXL \
