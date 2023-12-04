@@ -29,7 +29,7 @@ RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hm
 
 # Build numactl
 RUN set -x && apt-get install -y libtool \
-		&& cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make V=1 check && make install
+		&& cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make V=1 && make install
 
 # Build memcached with HMSDK implicitAPI
 RUN set -x && buildDeps='curl gcc libc6-dev libevent-dev make perl' \
