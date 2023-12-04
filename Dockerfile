@@ -9,32 +9,29 @@ RUN groupadd -r memcache && useradd -r -g memcache memcache
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y --no-install-recommends libevent-2.1-7 && rm -rf /var/lib/apt/lists/*
+
+
+RUN apt-get update && buildDeps='curl git gcc libc6-dev libevent-dev cmake make perl autoconf python3 build-essential libtool m4'\
+	&& apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 # Install modified memcached
-RUN set -x && apt-get update && apt-get install -y $buildDeps --no-install-recommends \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& mkdir -p /usr/src/memcached && cd /usr/src \
-	&& apt update && apt-get install -y git && git clone --recursive https://github.com/comsys-lab/CXL.git \
+RUN set -x && mkdir -p /usr/src/memcached && cd /usr/src \
+	&& git clone --recursive https://github.com/comsys-lab/CXL.git \
 	&& cd /usr/src/CXL && tar -xzf memcached_hmsdk.tar.gz -C /usr/src/memcached --strip-components=1 && rm /usr/src/CXL/memcached_hmsdk.tar.gz
 
 # Install HMSDK
 # Prerequisite: kernel for HMSDK has been built.
 RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hmsdk.git \
 		# Option 1: Build cemalloc package
-		&& apt-get update && apt-get install -y cmake && apt-get install -y autoconf && apt-get install -y python3 && apt-get install -y build-essential \
 		&& cd /usr/src/hmsdk/cemalloc/ && ./build.py
 		# Option 2: Use pre-built cemalloc package
 		#&& cp -r /usr/src/CXL/cemalloc_package /usr/src/hmsdk/cemalloc/
 
 # Build numactl
-RUN set -x && apt-get install -y libtool \
-		&& cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make V=1 && make install
+RUN set -x && cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make V=1 && make install
 
 # Build memcached with HMSDK implicitAPI
-RUN set -x && buildDeps='curl gcc libc6-dev libevent-dev make perl' \
-		&& apt-get update && apt-get install -y perl && apt-get install -y m4 && apt install curl && apt-get install -y libevent-dev \
-		&& apt remove -y automake && apt autoclean && apt -y autoremove \
+RUN set -x && apt remove -y automake && apt autoclean && apt -y autoremove \
 		&& cd /usr/src && curl -SL "http://ftp.gnu.org/gnu/automake/automake-1.16.4.tar.gz" -o automake.tar.gz && tar xvfz automake.tar.gz && rm automake.tar.gz \
 		&& cd automake-1.16.4 && ./configure --prefix=/usr && make && make install \
   		# HMSDK implicitAPI
