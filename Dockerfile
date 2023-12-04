@@ -31,20 +31,19 @@ RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hm
 RUN set -x && apt-get install -y libtool \
 		&& cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make V=1 check && make install
 
-# Build memcached
+# Build memcached with HMSDK implicitAPI
 RUN set -x && buildDeps='curl gcc libc6-dev libevent-dev make perl' \
-		&& apt-get update && apt-get install -y perl && apt-get install -y m4 \
+		&& apt-get update && apt-get install -y perl && apt-get install -y m4 && apt install curl \
 		&& apt remove -y automake && apt autoclean && apt -y autoremove \
 		&& cd /usr/src && curl -SL "http://ftp.gnu.org/gnu/automake/automake-1.16.4.tar.gz" -o automake.tar.gz && tar xvfz automake.tar.gz && rm automake.tar.gz \
 		&& cd automake-1.16.4 && ./configure --prefix=/usr && make && make install \
+  		# HMSDK implicitAPI
+  		&& export CE_MODE=CE_IMPLICIT && export CE_CXL_NODE=0 && export CE_ALLOC=CE_ALLOC_CXL \
+		&& export LD_PRELOAD=/usr/src/hmsdk/cemalloc/cemalloc_package/libcemalloc.so \
 		&& cd /usr/src/memcached && ./configure && make -j$(nproc) \
 		&& make install \
 		&& rm -rf /usr/src/memcached \
 		&& apt-get purge -y --auto-remove $buildDeps
-
-# HMSDK implicitAPI
-RUN set -x && export CE_MODE=CE_IMPLICIT && export CE_CXL_NODE=0 && export CE_ALLOC=CE_ALLOC_CXL \
-		&& export LD_PRELOAD=/usr/src/hmsdk/cemalloc/cemalloc_package/libcemalloc.so
 
 ENTRYPOINT [ "memcached" ]
 
