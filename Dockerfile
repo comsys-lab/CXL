@@ -49,6 +49,6 @@ ENTRYPOINT [ "memcached" ]
 
 USER memcache
 
-EXPOSE map[11211/tcp:{}]
+EXPOSE 11211
 
 CMD ["-t" "2" "-m" "2048" "-n" "550"]
