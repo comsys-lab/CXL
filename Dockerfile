@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 
 
-RUN apt-get update && buildDeps='curl git gcc libc6-dev libevent-dev cmake make perl autoconf python3 build-essential libtool m4'\
+RUN apt-get update && buildDeps='curl git ca-certificates gcc libc6-dev libevent-dev cmake make perl autoconf python3 build-essential libtool m4'\
 	&& apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 # Install modified memcached
