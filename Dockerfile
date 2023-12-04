@@ -18,8 +18,8 @@ RUN set -x && apt-get update && apt-get install -y $buildDeps --no-install-recom
 	&& apt update && apt-get install -y git && git clone --recursive https://github.com/comsys-lab/CXL.git \
 	&& cd /usr/src/CXL && tar -xzf memcached_hmsdk.tar.gz -C /usr/src/memcached --strip-components=1 && rm /usr/src/CXL/memcached_hmsdk.tar.gz
 
-# Install hmsdk
-# Prerequisite: kernel for hmsdk has been built.
+# Install HMSDK
+# Prerequisite: kernel for HMSDK has been built.
 RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hmsdk.git \
 		# Option 1: Build cemalloc package
 		&& apt-get update && apt-get install -y cmake && apt-get install -y autoconf \
@@ -35,7 +35,7 @@ RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hm
 RUN set -x && apt-get install -y libtool \
 		&& cd /usr/src/hmsdk/numactl && ./autogen.sh && ./configure && make && make install
 
-# HMSDK ImplicitAPI
+# HMSDK implicitAPI
 RUN set -x && export CE_MODE=CE_IMPLICIT && export CE_CXL_NODE=0 && export CE_ALLOC=CE_ALLOC_CXL \
 		&& export LD_PRELOAD=/usr/src/hmsdk/cemalloc/cemalloc_package/libcemalloc.so
 
