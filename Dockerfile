@@ -21,7 +21,7 @@ RUN set -x && mkdir -p /usr/src/memcached && cd /usr/src \
 
 # Install HMSDK
 # Prerequisite: kernel for HMSDK has been built.
-RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hmsdk.git \
+RUN set -x && cd /usr/src && git clone --recursive --shallow-submodules https://github.com/SKhynix/hmsdk.git \
 		# Option 1: Build cemalloc package
 		&& cd /usr/src/hmsdk/cemalloc/ && ./build.py
 		# Option 2: Use pre-built cemalloc package
