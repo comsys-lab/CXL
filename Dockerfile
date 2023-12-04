@@ -23,13 +23,10 @@ RUN set -x && apt-get update && apt-get install -y $buildDeps --no-install-recom
 RUN set -x && cd /usr/src && git clone --recursive https://github.com/SKhynix/hmsdk.git \
 		# Option 1: Build cemalloc package
 		&& apt-get update && apt-get install -y cmake && apt-get install -y autoconf \
-		#&& apt-get update && apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev curl libbz2-dev \
-		#&& curl -O https://www.python.org/ftp/python/3.11.0/Python-3.11.0.tar.xz && tar -xf Python-3.11.0.tar.xz \
-		#&& rm Python-3.11.0.tar.xz && cd Python-3.11.0
-		#&& ./configure --enable-optimizations && make -j $(nproc) && make altinstall
-		#&& cd .. && cd hmsdk/cemalloc/ && ./build.py \
+  		&& apt-get update && apt-get install -y python3 \
+		&& cd /usr/src/hmsdk/cemalloc/ && ./build.py \
 		# Option 2: Use pre-built cemalloc package
-		&& cp -r /usr/src/CXL/cemalloc_package /usr/src/hmsdk/cemalloc/
+		#&& cp -r /usr/src/CXL/cemalloc_package /usr/src/hmsdk/cemalloc/
 
 # Build numactl
 RUN set -x && apt-get install -y libtool \
