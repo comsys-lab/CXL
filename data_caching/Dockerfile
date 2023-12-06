@@ -21,6 +21,7 @@ RUN set -x && buildDeps='curl gcc libc6-dev libevent-dev make perl git ca-certif
 	&& rm -rf /usr/src/memcached \
 
 # Install HMSDK
+# Prerequisite: Kernel build
 RUN set -x && cd /usr/src \
 	&& git clone --recursive --shallow-submodules "https://github.com/SKhynix/hmsdk.git" && apt-get update && apt-get install -y autoconf \
 	&& cd /usr/src/hmsdk/cemalloc/ && ./build.py \
@@ -29,10 +30,6 @@ RUN set -x && cd /usr/src \
 RUN set -x && cd /usr/src/hmsdk/numactl \
 	&& ./autogen.sh && ./configure && make && make install \
 	&& apt-get purge -y --auto-remove $buildDeps \
-
-# HMSDK implicitAPI
-RUN set -x && export CE_MODE=CE_IMPLICIT && export CE_CXL_NODE=1 && export CE_ALLOC=CE_ALLOC_CXL \
-	&& export LD_PRELOAD=/usr/src/hmsdk/cemalloc/cemalloc_package/libcemalloc.so
 
 ENTRYPOINT ["memcached"]
 
